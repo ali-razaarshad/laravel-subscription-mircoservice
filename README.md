@@ -38,3 +38,25 @@ DB_PASSWORD=   # (put your MySQL root password here, or leave blank if none)
 
 # Now that Laravel is pointing to MySQL, re-run migrations:
 php artisan migrate:fresh
+
+
+# API
+# All endpoints require Authorization: Bearer <TOKEN>.
+
+GET /api/subscriptions (admin only): list all subscriptions (paginated)
+
+POST /api/subscribe (user): body { "plan_name": "Pro", "auto_renew": true }
+
+GET /api/user/subscriptions (user): list own active subscriptions
+
+# Create API tokens
+
+php artisan tinker
+
+# Admin
+$admin = \App\Models\User::factory()->create(['email'=>'admin@example.com','password'=>bcrypt('password'),'role'=>'admin']);
+$adminToken = $admin->createToken('admin-token')->plainTextToken;
+
+# User
+$user = \App\Models\User::factory()->create(['email'=>'user@example.com','password'=>bcrypt('password'),'role'=>'user']);
+$userToken = $user->createToken('user-token')->plainTextToken;
